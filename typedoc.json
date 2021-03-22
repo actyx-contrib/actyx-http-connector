@@ -1,0 +1,19 @@
+{
+  "mode": "file",
+  "out": "docs",
+  "inputFiles" : [],
+  "exclude": [
+    "**/node_modules/**",
+    "**/lib/**",
+    "**/bin/**",
+    "**/example/**"
+  ],
+  "disableSources": false,
+  "includeVersion": true,
+  "theme": "minimal",
+  "listInvalidSymbolLinks": true,
+  "target": "es5",
+  "module" :"commonjs",
+  "excludeNotExported": true,
+  "stripInternal": true
+}
