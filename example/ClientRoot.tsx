@@ -24,7 +24,7 @@ export const App = () => {
   const [emitResult, setEmitResult] = React.useState('')
 
   const getMachineFishState = () => {
-    fetch(`http://localhost:4242/state/machineFish/${machineName}`)
+    fetch(`http://localhost:4242/state/machineFish/${machineName}`, { headers: { key: 'someKey' } })
       .then(res => res.body.getReader().read())
       .then(data => Buffer.from(data.value).toString())
       .then(JSON.parse)
@@ -46,6 +46,7 @@ export const App = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        key: 'someKey',
       },
     })
       .then(() => setEmitResult('send'))
@@ -61,6 +62,7 @@ export const App = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        key: 'someKey',
       },
     })
       .then(() => setEmitResult('send'))
@@ -68,6 +70,8 @@ export const App = () => {
   }
 
   React.useEffect(() => {
+    document.cookie = `authorization=Basic ${btoa('username:password')}`
+
     const ws = new WebSocket(`ws://localhost:4242/observe-state/machineFish/${machineName}`)
     ws.onmessage = message => {
       setWsMachineState(JSON.parse(message.data))

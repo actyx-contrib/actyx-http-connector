@@ -2,7 +2,8 @@
   "name": "actyx-http-connector",
   "version": "0.1.0",
   "description": "Rest or WS interface to interconnect to actyx",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "prepack": "npm run build:doc && npm run build",
     "clean": "rimraf ./lib ./coverage ./dist ./.cache",
@@ -65,6 +66,6 @@
     "ts-loader": "^7.0.5",
     "ts-node": "^9.1.1",
     "typedoc": "^0.17.7",
-    "typescript": "^3.9.5"
+    "typescript": "^4.2.3"
   }
 }
