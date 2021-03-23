@@ -15,11 +15,10 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { SetStateEvent } from './fish/machineFish'
+import { SetStateEvent } from '../fish/machineFish'
 
 export const App = () => {
   const [machineState, setMachineState] = React.useState('')
-  const [wsMachineState, setWsMachineState] = React.useState('')
   const [machineName, setMachineName] = React.useState('Machine 1')
   const [emitResult, setEmitResult] = React.useState('')
 
@@ -52,32 +51,6 @@ export const App = () => {
       .then(() => setEmitResult('send'))
       .catch(() => setEmitResult('failed'))
   }
-  const emitterState = (state: SetStateEvent['state']) => () => {
-    // like: MachineFish.emitMachineState
-    fetch(`http://localhost:4242/emit/machineState`, {
-      body: JSON.stringify({
-        machine: machineName,
-        state: state,
-      }),
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        key: 'someKey',
-      },
-    })
-      .then(() => setEmitResult('send'))
-      .catch(() => setEmitResult('failed'))
-  }
-
-  React.useEffect(() => {
-    document.cookie = `authorization=Basic ${btoa('username:password')}`
-
-    const ws = new WebSocket(`ws://localhost:4242/observe-state/machineFish/${machineName}`)
-    ws.onmessage = message => {
-      setWsMachineState(JSON.parse(message.data))
-    }
-    return () => ws.close()
-  }, [machineName])
 
   const cardStyle: React.CSSProperties = {
     borderRadius: 3,
@@ -115,23 +88,6 @@ export const App = () => {
         </div>
         <div>
           <pre>{emitResult}</pre>
-        </div>
-      </div>
-
-      <div style={cardStyle}>
-        <div>HTTP-emitter</div>
-        <div>
-          <button onClick={emitterState('idle')}>Idle</button>
-        </div>
-        <div>
-          <pre>{emitResult}</pre>
-        </div>
-      </div>
-
-      <div style={cardStyle}>
-        <div>WebSocket-observe: Machine status</div>
-        <div>
-          <pre>{JSON.stringify(wsMachineState, undefined, 2)}</pre>
         </div>
       </div>
     </div>

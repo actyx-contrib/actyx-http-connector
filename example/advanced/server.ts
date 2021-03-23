@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 /* tslint:disable:no-expression-statement no-if-statement */
-import { httpConnector, EmitResult, hasProperty, registryEntry } from '../src'
+import { httpConnector, EmitResult, hasProperty, registryEntry } from '../../src'
 import { Pond } from '@actyx/pond'
-import { MachineFish } from './fish/machineFish'
+import { MachineFish } from '../fish/machineFish'
+import cors from 'cors'
+import { text } from 'body-parser'
 
 // Event validator
 type MachineStatePayload = {
@@ -53,8 +55,10 @@ Pond.default()
       // are emitted and you can verify the event with TypeScript or io-TS
       eventEmitters: {
         machineState: async (pond, payload) => {
-          if (isMachineStatePayload(payload)) {
-            await MachineFish.emitMachineState(pond, payload.machine, payload.state)
+          const data = JSON.parse(payload as string)
+          console.log(data.machine)
+          if (isMachineStatePayload(data)) {
+            await MachineFish.emitMachineState(pond, data.machine, data.state)
             return EmitResult.reply(204)
           } else {
             return EmitResult.reply(403, 'wrong parameter')
@@ -62,9 +66,19 @@ Pond.default()
         },
       },
       // Add the authentication layer before the routes are created.
-      // this hook is added after urlencoded, json, and cors, you could add XML parser,
+      // this hook is added after urlencoded, json, you could add XML parser,
       // cookie parser and other middleware you like
       preSetup: app => {
+        // add cors settings to get fetch use the cookies
+        app.use(
+          cors({
+            credentials: true,
+            origin: 'http://localhost:1234',
+          }),
+        )
+        // add body-parser text no-corse is not supporting json. data are send as text
+        app.use(text({ defaultCharset: 'UTF-8' }))
+        // add auth middleware to validate authorization cookie
         app.use((req, res, next) => {
           // example for a very trivial cookie authentication. This will work with Websockets
           // as well, but requires a cookie

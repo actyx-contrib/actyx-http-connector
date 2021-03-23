@@ -1,5 +1,5 @@
 {
-  "name": "actyx-http-connector",
+  "name": "@actyx-contrib/actyx-http-connector",
   "version": "0.1.0",
   "description": "Rest or WS interface to interconnect to actyx",
   "main": "./lib/index.js",
@@ -17,7 +17,8 @@
     "license:add": "license-check-and-add add -f add-license-config.json",
     "license:check": "license-check-and-add check -f add-license-config.json",
     "license:check-dep": "license-checker --production --onlyAllow 'MIT; MIT OR X11; BSD; ISC; Apache-2.0;'",
-    "example:start": "ts-node example/server.ts & parcel example/client.html"
+    "example:simple": "ts-node example/simple/server.ts & parcel example/simple/client.html",
+    "example:advanced": "ts-node example/advanced/server.ts & parcel example/advanced/client.html"
   },
   "repository": {
     "type": "git",

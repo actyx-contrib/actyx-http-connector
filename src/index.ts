@@ -16,7 +16,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* tslint:disable:no-expression-statement strict-type-predicates no-if-statement no-namespace */
 import { Fish, Pond, SplashState, ConnectivityStatus, Tags } from '@actyx/pond'
-import bodyParser from 'body-parser'
+import { json, urlencoded } from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import expressWs from 'express-ws'
@@ -234,7 +234,10 @@ export type HttpConnectorConfig = {
   }
 }
 
-const bodyLimit = '10mb'
+/**
+ * @ignore
+ */
+const bodyLimit = '20mb'
 
 /**
  * Initialize the http-Connector. This could be part of an existing application
@@ -271,15 +274,17 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
   console.info('creating http-connector')
   const { pond, preSetup, postSetup, allowEmit, registry, eventEmitters } = config
 
-  const registryRoutes = Object.entries(registry || {})
-    .map(([key, value]) => {
-      const fishId =
-        typeof value.fish === 'function' ? value.fish('{param}').fishId : value.fish.fishId
-      const route = typeof value.fish === 'function' ? `/state/${key}/{param}` : `/state/${key}`
+  const registryRoutes = (path: string) =>
+    Object.entries(registry || {})
+      .map(([key, value]) => {
+        const fishId =
+          typeof value.fish === 'function' ? value.fish('{param}').fishId : value.fish.fishId
+        const route =
+          typeof value.fish === 'function' ? `/${path}/${key}/{param}` : `/${path}/${key}`
 
-      return [route, `FishId: ${fishId.entityType} ${fishId.name}`]
-    })
-    .reduce((acc, [route, value]) => ({ ...acc, [route]: value }), {})
+        return [route, `FishId: ${fishId.entityType} ${fishId.name}`]
+      })
+      .reduce((acc, [route, value]) => ({ ...acc, [route]: value }), {})
 
   const emitRoutes = Object.keys(eventEmitters || {}).map(name => `/emit/${name}`)
 
@@ -294,9 +299,12 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
     '/system/connectivity': 'current swarm connectivity',
     '/emit': directEmitRoute,
     states: {
-      ...registryRoutes,
+      ...registryRoutes('state'),
     },
     emitter: { info: 'POST call. Send event payload as JSON', routes: emitRoutes },
+    webSocket: {
+      ...registryRoutes('observe-state'),
+    },
   })
 
   let swarmSyncState: SplashState | undefined = undefined
@@ -310,8 +318,8 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
   pond.getNodeConnectivity({ callback: state => (nodeConnectivityState = state) })
 
   const app = expressWs(express()).app
-  app.use(bodyParser.urlencoded({ extended: false, limit: bodyLimit }))
-  app.use(bodyParser.json({ limit: bodyLimit }))
+  app.use(urlencoded({ extended: false, limit: bodyLimit }))
+  app.use(json({ limit: bodyLimit }))
   app.use(cors())
 
   preSetup && preSetup(app)
@@ -339,7 +347,16 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
   // add user routes
   if (allowEmit) {
     app.post('/emit', async (req, res) => {
-      const { tags, payload } = req.body
+      let data = req.body
+      if (typeof data === 'string') {
+        try {
+          data = JSON.parse(data)
+        } catch (_) {
+          res.status(403)
+          res.send({ message: `invalid payload` })
+        }
+      }
+      const { tags, payload } = data
       console.log(tags, payload)
 
       if (!Array.isArray(tags) || tags.length === 0) {
