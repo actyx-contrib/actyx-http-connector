@@ -1,8 +1,8 @@
-<img width="130px" src="https://raw.githubusercontent.com/actyx-contrib/actyx-http-connector/master/icon.png?token=AATHWQIC5RWS62GY3OINH3C645MHQ">
+<img width="130px" src="https://raw.githubusercontent.com/actyx-contrib/actyx-HTTP-Connector/master/icon.png?token=AATHWQIC5RWS62GY3OINH3C645MHQ">
 
-# Actyx-Http-Connector
+# Actyx-HTTP-Connector
 
-Build your Actyx-Http-Connector in a couple of minutes, but keep the full control over the http server.
+Build your Actyx-HTTP-Connector in a couple of minutes, but keep full control over the HTTP server.
 
 ## ✨ Features
 
@@ -13,13 +13,13 @@ Build your Actyx-Http-Connector in a couple of minutes, but keep the full contro
 - Publish event directly to Actyx (dangerous)
 - Register your fish and get the state
 - WebSocket connection to observe the fish in your registry
-- Emitter function with more control for easy to use emit routes
+- Emitter function with more control for easy-to-use emit routes
 - preSetup express hook to add middleware as body-parser, static files or authentication layers
-- postSetup express hook to add fall through handler or add custom routs
+- postSetup express hook to add fall through a handler or add custom routes
 
 ## 📦 Installation
 
-Actyx-http-connector is available as a [npm package](https://www.npmjs.com/package/@actyx-contrib/actyx-http-connector).
+Actyx-HTTP-Connector is available as a [npm package](https://www.npmjs.com/package/@actyx-contrib/actyx-http-connector).
 
 ```shell
 npm install @actyx-contrib/actyx-http-connector
@@ -27,23 +27,25 @@ npm install @actyx-contrib/actyx-http-connector
 
 # 📖 Documentation
 
-You can access the full API documentation and related examples by visiting: [https://actyx-contrib.github.io/actyx-http-connector](https://actyx-contrib.github.io/actyx-http-connector/)
+You can access the full API documentation and related examples by visiting: [https://actyx-contrib.github.io/actyx-HTTP-Connector](https://actyx-contrib.github.io/actyx-http-connector/)
 
 # Detailed Examples
 
-You will find a detailed examples [here](https://github.com/actyx-contrib/actyx-http-connector/tree/master/example).
+You will find detailed examples [here](https://github.com/actyx-contrib/actyx-http-connector/tree/master/example).
 
 You can start them with `npm i && npm run example:simple` or `npm i && npm run example:advanced`.
 
-After building the projects you can access an non-Actyx-App-Ui that use the started Http-Connector at http://localhost:1234. Please verify the port with the console output during build.
+After building the projects, you can access a non-Actyx-App-Ui that uses the started HTTP-Connector at http://localhost:1234. Please verify the port with the console output during the build.
 
 # 🤓 Quick start
 
 ## 🌊 `httpConnector`
 
-Use the `httpConnector()` function to build the Http-connector. In this example you will find more information about the possible parameter
+Use the `httpConnector()` function to build the HTTP-Connector. In this example you will find more information about the possible parameter
 
-### Minimal example:
+# 🤓 Examples
+
+## Minimal example:
 
 ```typescript
 import { httpConnector, registryEntry } from '../../src'
@@ -51,20 +53,20 @@ import { Pond } from '@actyx/pond'
 // Api Server
 Pond.default().then(pond => {
   httpConnector({
-    // The pond instance is required for the http-connector
+    // The pond instance is required for the HTTP-Connector
     pond,
-    // Allows the user of the Http-Connector to emit events directly into actyx.
+    // Allows the user of the HTTP-Connector to emit events directly into actyx.
     // It is not recommended to use this feature.
     // Please use `eventEmitters` or at least add an authentication with `preSetup`
     allowEmit: true,
     // Propagate which fish you like to access from external programs.
-    // The fish will be published over the http get request or can be observed with the websocket
+    // The fish will be published over the HTTP get request or can be observed with the websocket
     registry: { someFish: registryEntry(SomeFish.of) },
   })
 })
 ```
 
-### Complete example:
+## Complete example:
 
 ```typescript
 import { httpConnector, registryEntry } from '../../src'
@@ -72,10 +74,10 @@ import { Pond } from '@actyx/pond'
 // Api Server
 Pond.default().then(pond => {
   httpConnector({
-    // The pond instance is required for the http-connector
+    // The pond instance is required for the HTTP-Connector
     pond,
     // Propagate which fish you like to access from external programs.
-    // The fish will be published over the http get request or can be observed with the websocket
+    // The fish will be published over the HTTP get request or can be observed with the websocket
     registry: {
       someFish: registryEntry(SomeFish.of),
     },
