@@ -2,7 +2,9 @@
 
 # Actyx-HTTP-Connector
 
-Build your Actyx-HTTP-Connector in a couple of minutes, but keep full control over the HTTP server.
+Need connector to talk an Actyx swarm from external applcations via HTTP?
+
+`Actyx-HTTP-Connector` allows you to build one in a few of minutes while keeping the embedded HTTP server fully customizeable.
 
 ## ✨ Features
 
@@ -27,25 +29,29 @@ npm install @actyx-contrib/actyx-http-connector
 
 # 📖 Documentation
 
-You can access the full API documentation and related examples by visiting: [https://actyx-contrib.github.io/actyx-HTTP-Connector](https://actyx-contrib.github.io/actyx-http-connector/)
+The complete API documentation and related examples are available at [https://actyx-contrib.github.io/actyx-HTTP-Connector](https://actyx-contrib.github.io/actyx-http-connector/)
 
 # Detailed Examples
 
-You will find detailed examples [here](https://github.com/actyx-contrib/actyx-http-connector/tree/master/example).
+You can find sample applications [on GitHub](https://github.com/actyx-contrib/actyx-http-connector/tree/master/example).
 
-You can start them with `npm i && npm run example:simple` or `npm i && npm run example:advanced`.
+The `simple` example exposes the possibility to query fish state and emit events to the Pond directly. The `advanced` example adds web socket communication, uses event emitters and adds authentication. Both projcets come with a simple react app. Note that these apps do _not_ directly talk to the Actyx node but the HTTP connector.
 
-After building the projects, you can access a non-Actyx-App-Ui that uses the started HTTP-Connector at http://localhost:1234. Please verify the port with the console output during the build.
+Run the examples using `npm i && npm run example:simple` or `npm i && npm run example:advanced`, respectivly.
+
+After building the projects, you can access a the UI that uses the HTTP-Connector at http://localhost:1234. Please verify the port with the console output during the build.
 
 # 🤓 Quick start
 
 ## 🌊 `httpConnector`
 
-Use the `httpConnector()` function to build the HTTP-Connector. In this example you will find more information about the possible parameter
+TODO: Describe Actyx Prerequisites
+
+Use `httpConnector()` to create an HTTP-Connector instace. 
 
 # 🤓 Examples
 
-## Minimal example:
+## Minimal example
 
 ```typescript
 import { httpConnector, registryEntry } from '../../src'
@@ -66,7 +72,7 @@ Pond.default().then(pond => {
 })
 ```
 
-## Complete example:
+## Complete example
 
 ```typescript
 import { httpConnector, registryEntry } from '../../src'
