@@ -46,6 +46,8 @@ You can find sample applications [on GitHub](https://github.com/actyx-contrib/ac
 
 The `simple` example exposes the possibility to query fish state and emit events to the Pond directly. The `advanced` example adds web socket communication, uses event emitters and adds authentication. Both projects come with a simple react app. Note that these apps do _not_ directly talk to an Actyx node but interface through the HTTP connector.
 
+Make sure you have an Axtyx node running on your machine before starting the examples. You can get the binaries from (our download site](https://downloads.actyx.com/).
+
 You can start the examples using `npm i && npm run example:simple` or `npm i && npm run example:advanced`, respectivly. The apps are accessible at http://localhost:1234. If that port is already allocated, the build picks another one at random. Check the build's console output to be sure.
 
 # 🤓 Quick start
@@ -82,8 +84,34 @@ Pond.default().then(pond => {
     registry: { someFish: registryEntry(SomeFish.of) },
   })
 ```
+# 🤓 Examples
 
-# 🤓 Complete example
+# Minimal example
+
+The minimal example simply allows you to emit events directly into actyx using an HTTP API.
+
+```ts
+import { httpConnector, registryEntry } from '../../src'
+import { Pond } from '@actyx/pond'
+// Api Server
+Pond.default().then(pond => {
+  httpConnector({
+    // The pond instance is required for the HTTP-Connector
+    pond,
+    // Allows the user of the HTTP-Connector to emit events directly into actyx.
+    // It is not recommended to use this feature.
+    // Please use `eventEmitters` or at least add an authentication with `preSetup`
+    allowEmit: true,
+    // Propagate which fish you like to access from external programs.
+    // The fish will be published over the HTTP get request or can be observed with the websocket
+    registry: { someFish: registryEntry(SomeFish.of) },
+  })
+})
+```
+
+# Complete example
+
+The complete example shows also shows how to hook in middlewares and the usage of event emitters.
 
 ```typescript
 import { httpConnector, registryEntry } from '../../src'
