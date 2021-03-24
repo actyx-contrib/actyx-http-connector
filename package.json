@@ -1,7 +1,7 @@
 {
   "name": "@actyx-contrib/actyx-http-connector",
-  "version": "0.1.0",
-  "description": "Rest or WS interface to interconnect to actyx",
+  "version": "0.1.1",
+  "description": "REST or WS interface to interconnect to actyx",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "github.com:actyx-contrib/actyx-http-connector"
+    "url": "https://github.com/actyx-contrib/actyx-http-connector"
   },
   "keywords": [
     "actyx",
