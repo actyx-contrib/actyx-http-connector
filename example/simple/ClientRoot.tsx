@@ -48,7 +48,7 @@ export const App = () => {
         key: 'someKey',
       },
     })
-      .then(() => setEmitResult('send'))
+      .then(() => setEmitResult('sent'))
       .catch(() => setEmitResult('failed'))
   }
 
