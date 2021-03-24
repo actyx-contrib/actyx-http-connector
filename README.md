@@ -25,7 +25,7 @@ Additionally, you can query information from like your local source Id, the Pond
 
 ## ⚖️ Trade-Offs
 
-Note, however, that web apps running on the HTTP connector do not provide the same level of resilience that Actyx Apps do. These applications are not distributed and run on a central server.
+Note, however, that web apps running on the HTTP connector do not provide the same level of resilience that Actyx Apps do.
 
 This is typically not an issue when interfacing with external systems (top floor, back office). But you should probably not use it to build applications that run on the shof floor and need to be highly available and resilient.
 ## 📦 Installation
@@ -70,6 +70,7 @@ For further details, please refer to the docs and the examples.
 
 ```ts
 import { httpConnector, registryEntry } from '@actyx-contrib/actyx-http-connector'
+import { Pond } from '@actyx/pond'
 
 Pond.default().then(pond => {
   httpConnector({
