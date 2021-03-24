@@ -2779,22 +2779,30 @@ img {
 			<a href="#actyx-http-connector" id="actyx-http-connector" style="color: inherit; text-decoration: none;">
 				<h1>Actyx-HTTP-Connector</h1>
 			</a>
-			<p>Build your Actyx-HTTP-Connector in a couple of minutes, but keep full control over the HTTP server.</p>
+			<p>Need connector to talk an Actyx swarm from external applcations via HTTP?</p>
+			<p><code>Actyx-HTTP-Connector</code> allows you to build one in a few of minutes while keeping the embedded HTTP server fully customizeable.</p>
 			<a href="#✨-features" id="✨-features" style="color: inherit; text-decoration: none;">
 				<h2>✨ Features</h2>
 			</a>
+			<p>The HTTP connector allows you to interact with a swarm of Actyx nodes by providing an HTTP interface to systems not running Actyx.
+			You can use it to ...</p>
 			<ul>
-				<li>Get your local source Id</li>
-				<li>Get the pond state</li>
-				<li>Check if your node is in sync with the swarm</li>
-				<li>Current swarm connectivity</li>
-				<li>Publish event directly to Actyx (dangerous)</li>
-				<li>Register your fish and get the state</li>
-				<li>WebSocket connection to observe the fish in your registry</li>
-				<li>Emitter function with more control for easy-to-use emit routes</li>
-				<li>preSetup express hook to add middleware as body-parser, static files or authentication layers</li>
-				<li>postSetup express hook to add fall through a handler or add custom routes</li>
+				<li>... inject data from other systems that will be injected into the Actyx swarm in the form of events (think webhooks)</li>
+				<li>... query fish state from non-Actyx applications to show data from Actyx in other apps (e.g. legacy Web-Apps)</li>
+				<li>... get updates from the Actyx swarm via websockets</li>
 			</ul>
+			<p>The connector provides hooks you can use to influence the behaviour of the underlying HTTP server/web framework, <a href="https://expressjs.com/">Express</a>. You can use these hooks to ...</p>
+			<ul>
+				<li>... add middlewares like encryption, body-parsers or authentication</li>
+				<li>... add static file resources</li>
+				<li>... provide additional routes or catch-all route handlers</li>
+			</ul>
+			<p>Additionally, you can query information from like your local source Id, the Pond state, swarm connectivity and whether the node running the HTTP connector is in sync with the swarm to be able to deal with error conditions better.</p>
+			<a href="#⚖️-trade-offs" id="⚖️-trade-offs" style="color: inherit; text-decoration: none;">
+				<h2>⚖️ Trade-Offs</h2>
+			</a>
+			<p>Note, however, that web apps running on the HTTP connector do not provide the same level of resilience that Actyx Apps do.</p>
+			<p>This is typically not an issue when interfacing with external systems (top floor, back office). But you should probably not use it to build applications that run on the shop floor and need to be highly available and resilient.</p>
 			<a href="#📦-installation" id="📦-installation" style="color: inherit; text-decoration: none;">
 				<h2>📦 Installation</h2>
 			</a>
@@ -2803,27 +2811,50 @@ img {
 			<a href="#📖-documentation" id="📖-documentation" style="color: inherit; text-decoration: none;">
 				<h1>📖 Documentation</h1>
 			</a>
-			<p>You can access the full API documentation and related examples by visiting: <a href="https://actyx-contrib.github.io/actyx-http-connector/">https://actyx-contrib.github.io/actyx-HTTP-Connector</a></p>
+			<p>The complete API documentation and related examples are available at <a href="https://actyx-contrib.github.io/actyx-http-connector/">https://actyx-contrib.github.io/actyx-HTTP-Connector</a></p>
 			<a href="#detailed-examples" id="detailed-examples" style="color: inherit; text-decoration: none;">
 				<h1>Detailed Examples</h1>
 			</a>
-			<p>You will find detailed examples <a href="https://github.com/actyx-contrib/actyx-http-connector/tree/master/example">here</a>.</p>
-			<p>You can start them with <code>npm i &amp;&amp; npm run example:simple</code> or <code>npm i &amp;&amp; npm run example:advanced</code>.</p>
-			<p>After building the projects, you can access a non-Actyx-App-Ui that uses the started HTTP-Connector at <a href="http://localhost:1234">http://localhost:1234</a>. Please verify the port with the console output during the build.</p>
+			<p>You can find sample applications <a href="https://github.com/actyx-contrib/actyx-http-connector/tree/master/example">on GitHub</a>.</p>
+			<p>The <code>simple</code> example exposes the possibility to query fish state and emit events to the Pond directly. The <code>advanced</code> example adds web socket communication, uses event emitters and adds authentication. Both projects come with a simple react app. Note that these apps do <em>not</em> directly talk to an Actyx node but interface through the HTTP connector.</p>
+			<p>Make sure you have an Axtyx node running on your machine before starting the examples. You can get the binaries from <a href="https://downloads.actyx.com/">our download site</a>.</p>
+			<p>You can start the examples using <code>npm i &amp;&amp; npm run example:simple</code> or <code>npm i &amp;&amp; npm run example:advanced</code>, respectivly. The apps are accessible at <a href="http://localhost:1234">http://localhost:1234</a>. If that port is already allocated, the build picks another one at random. Check the build&#39;s console output to be sure.</p>
 			<a href="#🤓-quick-start" id="🤓-quick-start" style="color: inherit; text-decoration: none;">
 				<h1>🤓 Quick start</h1>
 			</a>
-			<a href="#🌊-httpconnector" id="🌊-httpconnector" style="color: inherit; text-decoration: none;">
-				<h2>🌊 <code>httpConnector</code></h2>
+			<p>To have access to your Actyx fish definitions and the Pond, it is best to create your HTTP server as part of an (probably already existing) <a href="https://github.com/actyx-contrib/actyx-project-cli">axp</a> project.</p>
+			<pre><code class="language-sh">$ <span class="hljs-built_in">cd</span> &lt;my project folder&gt;
+$ axp init <span class="hljs-comment"># only if you do not already have an Actyx project in place</span>
+$ axp add node --appName http-api
+$ npm install @actyx-contrib/actyx-http-connector --save</code></pre>
+			<a href="#🔌--add-httpconnector" id="🔌--add-httpconnector" style="color: inherit; text-decoration: none;">
+				<h2>🔌  Add <code>httpConnector</code></h2>
 			</a>
-			<p>Use the <code>httpConnector()</code> function to build the HTTP-Connector. In this example you will find more information about the possible parameter</p>
+			<p>In your <code>http-api</code> app&#39;s <code>index.ts</code>, import the HTTP connector, then use <code>httpConnector()</code> to create a server instance as shown below.
+			For further details, please refer to the docs and the examples.</p>
+			<pre><code class="language-ts"><span class="hljs-keyword">import</span> { httpConnector, registryEntry } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@actyx-contrib/actyx-http-connector&#x27;</span>
+<span class="hljs-keyword">import</span> { Pond } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@actyx/pond&#x27;</span>
+
+Pond.default().then(<span class="hljs-function"><span class="hljs-params">pond</span> =&gt;</span> {
+  httpConnector({
+    <span class="hljs-comment">// The pond instance is required for the HTTP-Connector</span>
+    pond,
+    <span class="hljs-comment">// Allows the user of the HTTP-Connector to emit events directly into actyx.</span>
+    <span class="hljs-comment">// It is not recommended to use this feature.</span>
+    <span class="hljs-comment">// Please use `eventEmitters` or at least add an authentication with `preSetup`</span>
+    <span class="hljs-attr">allowEmit</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-comment">// Propagate which fish you like to access from external programs.</span>
+    <span class="hljs-comment">// The fish will be published over the HTTP get request or can be observed with the websocket</span>
+    <span class="hljs-attr">registry</span>: { <span class="hljs-attr">someFish</span>: registryEntry(SomeFish.of) },
+  })</code></pre>
 			<a href="#🤓-examples" id="🤓-examples" style="color: inherit; text-decoration: none;">
 				<h1>🤓 Examples</h1>
 			</a>
 			<a href="#minimal-example" id="minimal-example" style="color: inherit; text-decoration: none;">
-				<h2>Minimal example:</h2>
+				<h2>Minimal example</h2>
 			</a>
-			<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { httpConnector, registryEntry } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../../src&#x27;</span>
+			<p>The minimal example simply allows you to emit events directly into actyx using an HTTP API.</p>
+			<pre><code class="language-ts"><span class="hljs-keyword">import</span> { httpConnector, registryEntry } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../../src&#x27;</span>
 <span class="hljs-keyword">import</span> { Pond } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@actyx/pond&#x27;</span>
 <span class="hljs-comment">// Api Server</span>
 Pond.default().then(<span class="hljs-function"><span class="hljs-params">pond</span> =&gt;</span> {
@@ -2840,8 +2871,9 @@ Pond.default().then(<span class="hljs-function"><span class="hljs-params">pond</
   })
 })</code></pre>
 			<a href="#complete-example" id="complete-example" style="color: inherit; text-decoration: none;">
-				<h2>Complete example:</h2>
+				<h2>Complete example</h2>
 			</a>
+			<p>The complete example shows also shows how to hook in middlewares and the usage of event emitters.</p>
 			<pre><code class="language-typescript"><span class="hljs-keyword">import</span> { httpConnector, registryEntry } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../../src&#x27;</span>
 <span class="hljs-keyword">import</span> { Pond } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@actyx/pond&#x27;</span>
 <span class="hljs-comment">// Api Server</span>
@@ -2864,14 +2896,14 @@ Pond.default().then(<span class="hljs-function"><span class="hljs-params">pond</
       },
     },
     <span class="hljs-comment">// Add the authentication layer before the routes are created.</span>
-    <span class="hljs-comment">// this hook is added after urlencoded, json, you could add XML parser,</span>
+    <span class="hljs-comment">// this hook is added after urlencoded, json, cors, you could add XML parser,</span>
     <span class="hljs-comment">// cookie parser and other middleware you like</span>
     <span class="hljs-attr">preSetup</span>: <span class="hljs-function"><span class="hljs-params">app</span> =&gt;</span> {
       app.use(xmlparser())
       <span class="hljs-comment">// add Authentication</span>
     },
     <span class="hljs-comment">// Add a handler after the routes are added to express.</span>
-    <span class="hljs-comment">// This could be used for a default &quot;not-Found&quot; page or a redirect to your documentation</span>
+    <span class="hljs-comment">// This could be used for a default &quot;404 not-Found&quot; page or a redirect to your documentation</span>
     <span class="hljs-attr">postSetup</span>: <span class="hljs-function"><span class="hljs-params">app</span> =&gt;</span> {
       app.use(<span class="hljs-function">(<span class="hljs-params">_req, res, _next</span>) =&gt;</span>
         res.redirect(<span class="hljs-string">&#x27;https://community.actyx.com&#x27;</span>)
@@ -2927,7 +2959,7 @@ Pond.default().then(<span class="hljs-function"><span class="hljs-params">pond</
 				<div class="tsd-signature tsd-kind-icon">Emit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>eventType<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L65">index.ts:65</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L65">index.ts:65</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2950,7 +2982,7 @@ Pond.default().then(<span class="hljs-function"><span class="hljs-params">pond</
 				<div class="tsd-signature tsd-kind-icon">Emit<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span>payload<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L75">index.ts:75</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L75">index.ts:75</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -2986,7 +3018,7 @@ Pond.default().then(<span class="hljs-function"><span class="hljs-params">pond</
 				<div class="tsd-signature tsd-kind-icon">Http<wbr>Connector<wbr>Config<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>allowEmit<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol">; </span>endpoint<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>host<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>port<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>eventEmitters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">; </span>pond<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Pond</span><span class="tsd-signature-symbol">; </span>postSetup<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>app<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">expressWs.Application</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">; </span>preSetup<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>app<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">expressWs.Application</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">; </span>registry<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L141">index.ts:141</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L141">index.ts:141</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3128,7 +3160,7 @@ httpConnector({
 				<div class="tsd-signature tsd-kind-icon">Params<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>fish<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L63">index.ts:63</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L63">index.ts:63</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3154,7 +3186,7 @@ httpConnector({
 				<div class="tsd-signature tsd-kind-icon">Registry<wbr>Entry&lt;Event, Props&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>fish<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>p<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Props</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Fish</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Event</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Fish</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Event</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>props<span class="tsd-signature-symbol">?: </span><a href="" class="tsd-signature-type">Props</a><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L41">index.ts:41</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L41">index.ts:41</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3199,7 +3231,7 @@ httpConnector({
 				<div class="tsd-signature tsd-kind-icon">Request<wbr>Ctx<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>fish<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>p<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">Fish</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Fish</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L67">index.ts:67</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L67">index.ts:67</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3225,7 +3257,7 @@ httpConnector({
 				<div class="tsd-signature tsd-kind-icon">Ws<wbr>Protocol<span class="tsd-signature-symbol">:</span> <a href="globals.html#wsprotocolerror" class="tsd-signature-type">WsProtocolError</a><span class="tsd-signature-symbol"> | </span><a href="globals.html#wsprotocoldata" class="tsd-signature-type">WsProtocolData</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/wsInterface.ts#L44">wsInterface.ts:44</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/wsInterface.ts#L44">wsInterface.ts:44</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3240,7 +3272,7 @@ httpConnector({
 				<div class="tsd-signature tsd-kind-icon">Ws<wbr>Protocol<wbr>Data<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">; </span>fish<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"data"</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/wsInterface.ts#L32">wsInterface.ts:32</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/wsInterface.ts#L32">wsInterface.ts:32</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3292,7 +3324,7 @@ httpConnector({
 				<div class="tsd-signature tsd-kind-icon">Ws<wbr>Protocol<wbr>Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">; </span>fish<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>props<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">"error"</span><span class="tsd-signature-symbol"> }</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/wsInterface.ts#L19">wsInterface.ts:19</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/wsInterface.ts#L19">wsInterface.ts:19</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3356,7 +3388,7 @@ httpConnector({
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L33">index.ts:33</a></li>
+								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L33">index.ts:33</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3408,7 +3440,7 @@ httpConnector({
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L273">index.ts:273</a></li>
+								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L273">index.ts:273</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3466,7 +3498,7 @@ httpConnector({
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/wsInterface.ts#L69">wsInterface.ts:69</a></li>
+								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/wsInterface.ts#L69">wsInterface.ts:69</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3516,7 +3548,7 @@ httpConnector({
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/wsInterface.ts#L54">wsInterface.ts:54</a></li>
+								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/wsInterface.ts#L54">wsInterface.ts:54</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3566,7 +3598,7 @@ httpConnector({
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L54">index.ts:54</a></li>
+								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L54">index.ts:54</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3617,7 +3649,7 @@ httpConnector({
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L105">index.ts:105</a></li>
+								<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L105">index.ts:105</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3650,7 +3682,7 @@ httpConnector({
 				<div class="tsd-signature tsd-kind-icon">Emit<wbr>Result<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L85">index.ts:85</a></li>
+						<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L85">index.ts:85</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3668,7 +3700,7 @@ httpConnector({
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/c5d84a4/src/index.ts#L93">index.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/actyx-contrib/actyx-http-connector/blob/ce16a63/src/index.ts#L93">index.ts:93</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">

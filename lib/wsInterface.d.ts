@@ -1,18 +1,21 @@
 /**
- * WebSocket result, if the websocket could not be established
+ * WebSocket data, if the websocket could not be established
  */
 declare type WsProtocolError = {
-    /** indicator that this message is an error */
+    /** Indicator that this message is an error */
     type: 'error';
-    /** fish that should be observed */
+    /** Fish that should be observed */
     fish: string;
-    /** optional properties to observe the fish */
+    /** Optional properties to observe the fish */
     props: string;
-    /** data, containing the error message */
+    /** Data, containing the error message */
     data: {
         message: string;
     };
 };
+/**
+ * WebSocket data, if the websocket could not be established
+ */
 declare type WsProtocolData = {
     /** indicator that this message contains some data */
     type: 'data';

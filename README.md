@@ -17,7 +17,7 @@ You can use it to ...
 
 The connector provides hooks you can use to influence the behaviour of the underlying HTTP server/web framework, [Express](https://expressjs.com/). You can use these hooks to ...
 
-* ... add middlewares like body-parsers or authentication
+* ... add middlewares like encryption, body-parsers or authentication
 * ... add static file resources
 * ... provide additional routes or catch-all route handlers
 
@@ -27,7 +27,8 @@ Additionally, you can query information from like your local source Id, the Pond
 
 Note, however, that web apps running on the HTTP connector do not provide the same level of resilience that Actyx Apps do.
 
-This is typically not an issue when interfacing with external systems (top floor, back office). But you should probably not use it to build applications that run on the shof floor and need to be highly available and resilient.
+This is typically not an issue when interfacing with external systems (top floor, back office). But you should probably not use it to build applications that run on the shop floor and need to be highly available and resilient.
+
 ## 📦 Installation
 
 Actyx-HTTP-Connector is available as a [npm package](https://www.npmjs.com/package/@actyx-contrib/actyx-http-connector).
@@ -57,9 +58,8 @@ To have access to your Actyx fish definitions and the Pond, it is best to create
 
 ```sh
 $ cd <my project folder>
-$ axp init # only if you do not already have an Actxy project in place
-$ axp add node --appName http-api 
-$ cd src/http-api
+$ axp init # only if you do not already have an Actyx project in place
+$ axp add node --appName http-api
 $ npm install @actyx-contrib/actyx-http-connector --save
 ```
 
@@ -85,9 +85,10 @@ Pond.default().then(pond => {
     registry: { someFish: registryEntry(SomeFish.of) },
   })
 ```
+
 # 🤓 Examples
 
-# Minimal example
+## Minimal example
 
 The minimal example simply allows you to emit events directly into actyx using an HTTP API.
 
@@ -110,7 +111,7 @@ Pond.default().then(pond => {
 })
 ```
 
-# Complete example
+## Complete example
 
 The complete example shows also shows how to hook in middlewares and the usage of event emitters.
 
@@ -137,14 +138,14 @@ Pond.default().then(pond => {
       },
     },
     // Add the authentication layer before the routes are created.
-    // this hook is added after urlencoded, json, you could add XML parser,
+    // this hook is added after urlencoded, json, cors, you could add XML parser,
     // cookie parser and other middleware you like
     preSetup: app => {
       app.use(xmlparser())
       // add Authentication
     },
     // Add a handler after the routes are added to express.
-    // This could be used for a default "not-Found" page or a redirect to your documentation
+    // This could be used for a default "404 not-Found" page or a redirect to your documentation
     postSetup: app => {
       app.use((_req, res, _next) =>
         res.redirect('https://community.actyx.com')
