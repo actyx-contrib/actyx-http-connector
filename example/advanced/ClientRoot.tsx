@@ -66,7 +66,7 @@ export const App = () => {
       credentials: 'include',
       mode: 'no-cors',
     })
-      .then(() => setEmitResult('send'))
+      .then(() => setEmitResult('sent'))
       .catch(() => setEmitResult('failed'))
   }
 
