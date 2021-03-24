@@ -46,7 +46,7 @@ You can find sample applications [on GitHub](https://github.com/actyx-contrib/ac
 
 The `simple` example exposes the possibility to query fish state and emit events to the Pond directly. The `advanced` example adds web socket communication, uses event emitters and adds authentication. Both projects come with a simple react app. Note that these apps do _not_ directly talk to an Actyx node but interface through the HTTP connector.
 
-Make sure you have an Axtyx node running on your machine before starting the examples. You can get the binaries from (our download site](https://downloads.actyx.com/).
+Make sure you have an Axtyx node running on your machine before starting the examples. You can get the binaries from [our download site](https://downloads.actyx.com/).
 
 You can start the examples using `npm i && npm run example:simple` or `npm i && npm run example:advanced`, respectivly. The apps are accessible at http://localhost:1234. If that port is already allocated, the build picks another one at random. Check the build's console output to be sure.
 
