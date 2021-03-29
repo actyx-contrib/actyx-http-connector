@@ -2,7 +2,7 @@
 
 # Actyx-HTTP-Connector
 
-Need connector to talk an Actyx swarm from external applications via HTTP?
+Need a connector to talk to an Actyx swarm from external applications via HTTP?
 
 `Actyx-HTTP-Connector` allows you to build one in a few minutes while keeping the embedded HTTP server fully customizable.
 
@@ -12,26 +12,26 @@ The HTTP connector allows you to interact with a swarm of Actyx nodes by providi
 You can use it to ...
 
 * ... inject data from other systems that will be injected into the Actyx swarm in the form of events (think webhooks)
-* ... query fish state from non-Actyx applications to show data from Actyx in other apps (e.g. legacy Web-Apps)
+* ... query [Fish](https://developer.actyx.com/docs/pond/guides/hello-world) state from non-Actyx applications to show data from Actyx in other apps (e.g. legacy web apps)
 * ... get updates from the Actyx swarm via WebSockets
 
 The connector provides hooks you can use to influence the behavior of the underlying HTTP server/web framework, [Express](https://expressjs.com/). You can use these hooks to ...
 
-* ... add middlewares like encryption, body-parsers or authentication
+* ... add middleware like encryption, body-parsers or authentication
 * ... add static file resources
 * ... provide additional routes or catch-all route handlers
 
-Additionally, you can query information from your local source Id, the Pond state, swarm connectivity, and whether the node running the HTTP connector is in sync with the swarm to better deal with error conditions.
+Additionally, you can query information like your local source ID, the [Pond](https://developer.actyx.com/docs/pond/introduction/ state, swarm connectivity and whether the node running the HTTP connector is in sync with the swarm to better deal with error conditions.
 
 ## ⚖️ Trade-Offs
 
-Note, however, that web apps running on the HTTP connector do not provide the same level of resilience that Actyx Apps do.
+Note, however, that web apps running on the HTTP connector do not provide the same level of resilience that Actyx apps do.
 
 This is typically not an issue when interfacing with external systems (top floor, back office). But you should probably not use it to build applications that run on the shop floor and need to be highly available and resilient.
 
 ## 📦 Installation
 
-Actyx-HTTP-Connector is available as a [npm package](https://www.npmjs.com/package/@actyx-contrib/actyx-http-connector).
+`Actyx-HTTP-Connector` is available as an [npm package](https://www.npmjs.com/package/@actyx-contrib/actyx-http-connector).
 
 ```shell
 npm install @actyx-contrib/actyx-http-connector
@@ -45,7 +45,7 @@ The complete API documentation and related examples are available at [https://ac
 
 You can find sample applications [on GitHub](https://github.com/actyx-contrib/actyx-http-connector/tree/master/example).
 
-The `simple` example exposes the possibility to query fish state and emit events to the Pond directly. The `advanced` example adds web socket communication, uses event emitters, and adds authentication. Both projects come with a simple react app. Note that these apps do _not_ directly talk to an Actyx node but interface through the HTTP connector.
+The `simple` example exposes the possibility to query Fish state and emit events to the Pond directly. The `advanced` example adds WebSocket communication, uses event emitters, and adds authentication. Both projects come with a simple [React](https://reactjs.org/) based app. Note that these apps do _not_ directly talk to an Actyx node but interface through the HTTP connector.
 
 Make sure you have an Axtyx node running on your machine before starting the examples. You can get the binaries from [our download site](https://downloads.actyx.com/).
 
@@ -53,7 +53,7 @@ You can start the examples using `npm i && npm run example:simple` or `npm i && 
 
 # 🤓 Quick start
 
-To have access to your Actyx fish definitions and the Pond, it is best to create your HTTP server as part of an (probably already existing) [axp](https://github.com/actyx-contrib/actyx-project-cli) project.
+To have access to your Actyx Fish definitions and the Pond, it is best to create your HTTP server as part of an (probably already existing) [axp](https://github.com/actyx-contrib/actyx-project-cli) project.
 
 
 ```sh
