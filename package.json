@@ -5,6 +5,8 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
+    "test": "TZ=UTC jest --config ./jest-config.js",
+    "test:watch": "TZ=UTC jest --watch --config ./jest-config.js",
     "prepack": "npm run build:doc && npm run build",
     "clean": "rimraf ./lib ./coverage ./dist ./.cache",
     "tsc": "tsc",
@@ -16,9 +18,12 @@
     "lint:fix": "tsc & eslint './src/**/*.{js,ts,tsx}' --fix & prettier './src/**/*.{js,ts,tsx}' --write",
     "license:add": "license-check-and-add add -f add-license-config.json",
     "license:check": "license-check-and-add check -f add-license-config.json",
-    "license:check-dep": "license-checker --production --onlyAllow 'MIT; MIT OR X11; BSD; ISC; Apache-2.0;'",
+    "license:check-dep": "license-checker --production --onlyAllow 'MIT; MIT OR X11; BSD; ISC; Apache-2.0;' --excludePackages '@actyx/sdk@0.1.2;@actyx/pond@3.0.1;'",
+    "examples:build": "npm run example:simple:build && npm run example:advanced:build",
     "example:simple": "ts-node example/simple/server.ts & parcel example/simple/client.html",
-    "example:advanced": "ts-node example/advanced/server.ts & parcel example/advanced/client.html"
+    "example:simple:build": "tsc --esModuleInterop --moduleResolution node --lib dom,es5,es6 example/simple/server.ts && parcel build example/simple/client.html --out-dir=./dist/simple",
+    "example:advanced": "ts-node example/advanced/server.ts & parcel example/advanced/client.html",
+    "example:advanced:build": "tsc --esModuleInterop --moduleResolution node --lib dom,es5,es6 example/advanced/server.ts && parcel build example/advanced/client.html --out-dir=./dist/advanced"
   },
   "repository": {
     "type": "git",
@@ -39,6 +44,7 @@
     "@actyx/pond": ">1"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -51,6 +57,7 @@
     "@types/deep-equal": "^1.0.1",
     "@types/express": "^4.17.11",
     "@types/express-ws": "^3.0.0",
+    "@types/jest": "^26.0.21",
     "@types/react": "^16.9.43",
     "@typescript-eslint/eslint-plugin": "^2.19.2",
     "@typescript-eslint/parser": "^2.19.2",
@@ -58,12 +65,15 @@
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
+    "jest": "^26.6.3",
     "license-check-and-add": "^3.0.4",
+    "license-checker": "25.0.1",
     "parcel": "1.12.3",
     "prettier": "^1.19.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rimraf": "^3.0.2",
+    "ts-jest": "^26.5.4",
     "ts-loader": "^7.0.5",
     "ts-node": "^9.1.1",
     "typedoc": "^0.17.7",
