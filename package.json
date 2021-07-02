@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
-    "test": "TZ=UTC jest --config ./jest-config.js",
+    "test": "TZ=UTC jest --forceExit --config ./jest-config.js",
     "test:watch": "TZ=UTC jest --watch --config ./jest-config.js",
     "prepack": "npm run build:doc && npm run build",
     "clean": "rimraf ./lib ./coverage ./dist ./.cache",
