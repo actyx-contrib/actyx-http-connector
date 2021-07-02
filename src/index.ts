@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Actyx AG
+ * Copyright 2021 Actyx AG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* tslint:disable:no-expression-statement strict-type-predicates no-if-statement no-namespace */
-import { Fish, Pond, SplashState, ConnectivityStatus, Tags } from '@actyx/pond'
+import { Fish, Pond, SplashState, Tags } from '@actyx/pond'
 import { json, urlencoded } from 'body-parser'
 import cors from 'cors'
 import express from 'express'
@@ -102,12 +102,13 @@ export const EmitResult = {
  * @param result EmitResult | Promise<EmitResult> from the emitter
  * @returns unified Promise<EmitResult>
  */
-const toEmitResult = async (result: EmitResult | Promise<EmitResult>): Promise<EmitResult> => {
-  if (result.hasOwnProperty('then')) {
-    const promiseResult = result as Promise<EmitResult>
-    return promiseResult
+export const toEmitResult = async (
+  result: EmitResult | Promise<EmitResult>,
+): Promise<EmitResult> => {
+  if (hasProperty(result, 'code')) {
+    return await Promise.resolve(result)
   } else {
-    return await Promise.resolve(result as EmitResult)
+    return result
   }
 }
 
@@ -237,7 +238,7 @@ export type HttpConnectorConfig = {
 /**
  * @ignore
  */
-const bodyLimit = '20mb'
+export const bodyLimit = '20mb'
 
 /**
  * Initialize the http-Connector. This could be part of an existing application
@@ -296,7 +297,6 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
     '/system/info': 'system information',
     '/system/pondState': 'fish jar state',
     '/system/sync': 'swarm sync state',
-    '/system/connectivity': 'current swarm connectivity',
     '/emit': directEmitRoute,
     states: {
       ...registryRoutes('state'),
@@ -309,13 +309,11 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
 
   let swarmSyncState: SplashState | undefined = undefined
   let syncDone = false
-  let nodeConnectivityState: ConnectivityStatus | undefined = undefined
   pond.waitForSwarmSync({
     enabled: true,
     onProgress: s => (swarmSyncState = s),
     onSyncComplete: () => (syncDone = true),
   })
-  pond.getNodeConnectivity({ callback: state => (nodeConnectivityState = state) })
 
   const app = expressWs(express()).app
   app.use(urlencoded({ extended: false, limit: bodyLimit }))
@@ -340,9 +338,6 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
       syncDone,
     })
   })
-  app.get('/system/connectivity', (_req, res) => {
-    res.status(200).send(nodeConnectivityState)
-  })
 
   // add user routes
   if (allowEmit) {
@@ -357,7 +352,7 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
         }
       }
       const { tags, payload } = data
-      console.log(tags, payload)
+      // console.log(tags, payload)
 
       if (!Array.isArray(tags) || tags.length === 0) {
         res.status(403)
