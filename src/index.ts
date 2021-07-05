@@ -352,7 +352,6 @@ export const httpConnector = (config: HttpConnectorConfig): expressWs.Applicatio
         }
       }
       const { tags, payload } = data
-      // console.log(tags, payload)
 
       if (!Array.isArray(tags) || tags.length === 0) {
         res.status(403)
