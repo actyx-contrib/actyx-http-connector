@@ -5,3 +5,4 @@ dist
 parcel-debug-*
 src/*/release
 *tgz
+coverage

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Actyx AG
+ * Copyright 2021 Actyx AG
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,17 @@
  */
 /* tslint:disable:no-expression-statement no-if-statement */
 import { httpConnector, registryEntry } from '../../src'
-import { Pond } from '@actyx/pond'
+import { AppManifest, Pond } from '@actyx/pond'
 import { MachineFish } from '../fish/machineFish'
 
+const manifest: AppManifest = {
+  appId: 'com.example.http-connector-example',
+  displayName: 'Http Connector Example simple',
+  version: '0.0.1',
+}
+
 // Api Server
-Pond.default()
+Pond.default(manifest)
   .then(pond => {
     httpConnector({
       // the pond instance is required for the http-connector

@@ -11,17 +11,17 @@ Need a connector to talk to an Actyx swarm from external applications via HTTP?
 The HTTP connector allows you to interact with a swarm of Actyx nodes by providing an HTTP interface to systems not running Actyx.
 You can use it to ...
 
-* ... inject data from other systems that will be injected into the Actyx swarm in the form of events (think webhooks)
-* ... query [Fish](https://developer.actyx.com/docs/pond/guides/hello-world) state from non-Actyx applications to show data from Actyx in other apps (e.g. legacy web apps)
-* ... get updates from the Actyx swarm via WebSockets
+- ... inject data from other systems that will be injected into the Actyx swarm in the form of events (think webhooks)
+- ... query [Fish](https://developer.actyx.com/docs/pond/guides/hello-world) state from non-Actyx applications to show data from Actyx in other apps (e.g. legacy web apps)
+- ... get updates from the Actyx swarm via WebSockets
 
-The connector provides hooks you can use to influence the behaviour of the underlying HTTP server/web framework, [Express](https://expressjs.com/). You can use these hooks to ...
+The connector provides hooks you can use to influence the behavior of the underlying HTTP server/web framework, [Express](https://expressjs.com/). You can use these hooks to ...
 
-* ... add middleware like encryption, body-parsers or authentication
-* ... add static file resources
-* ... provide additional routes or catch-all route handlers
+- ... add middleware like encryption, body-parsers or authentication
+- ... add static file resources
+- ... provide additional routes or catch-all route handlers
 
-Additionally, you can query information like your local source ID, the [Pond](https://developer.actyx.com/docs/pond/introduction/ state, swarm connectivity and whether the node running the HTTP connector is in sync with the swarm to be able to deal with error conditions better.
+Additionally, you can query information like your local source ID, the [Pond](https://developer.actyx.com/docs/pond/introduction/ state, and whether the node running the HTTP connector is in sync with the swarm to be able to deal with error conditions better.
 
 ## ⚖️ Trade-Offs
 
@@ -49,12 +49,11 @@ The `simple` example exposes the possibility to query Fish state and emit events
 
 Make sure you have an Axtyx node running on your machine before starting the examples. You can get the binaries from [our download site](https://downloads.actyx.com/).
 
-You can start the examples using `npm i && npm run example:simple` or `npm i && npm run example:advanced`, respectivly. The apps are accessible at http://localhost:1234. If that port is already allocated, the build picks another one at random. Check the build's console output to be sure.
+You can start the examples using `npm i && npm run example:simple` or `npm i && npm run example:advanced`, respectively. The apps are accessible at http://localhost:1234. If that port is already allocated, the build picks another one at random. Check the build's console output to be sure.
 
 # 🤓 Quick start
 
 To have access to your Actyx Fish definitions and the Pond, it is best to create your HTTP server as part of an (probably already existing) [axp](https://github.com/actyx-contrib/actyx-project-cli) project.
-
 
 ```sh
 $ cd <my project folder>
@@ -63,7 +62,7 @@ $ axp add node --appName http-api
 $ npm install @actyx-contrib/actyx-http-connector --save
 ```
 
-## 🔌  Add `httpConnector`
+## 🔌 Add `httpConnector`
 
 In your `http-api` app's `index.ts`, import the HTTP connector, then use `httpConnector()` to create a server instance as shown below.
 For further details, please refer to the docs and the examples.
@@ -147,9 +146,7 @@ Pond.default().then(pond => {
     // Add a handler after the routes are added to express.
     // This could be used for a default "404 not-Found" page or a redirect to your documentation
     postSetup: app => {
-      app.use((_req, res, _next) =>
-        res.redirect('https://community.actyx.com')
-      )
+      app.use((_req, res, _next) => res.redirect('https://community.actyx.com'))
     },
   })
 })

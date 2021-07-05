@@ -8,6 +8,9 @@
     "bin/",
     "lib/",
     "coverage/",
+    "example/",
+    ".github/",
+    "docs/",
     "add-license-text"
   ],
   "licenseFormats": {
