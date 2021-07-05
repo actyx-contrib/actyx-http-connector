@@ -6,8 +6,9 @@ coverage
 .travis.yml
 .vscode
 bin
+.github
 tsconfig.json
-jest.config.js
+jest-config.js
 jest.setup.js
 src/__tests__
 example
